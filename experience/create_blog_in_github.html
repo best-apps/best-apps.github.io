@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>使用gor在github上建立静态博客</title>
+    <meta name="baidu-site-verification" content="UEKwThMjA1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="MobileOptimized" content="width">
+	<meta name="HandheldFriendly" content="true">
+   
+  <meta name="keywords" content="经验分享,blog,gor,github">
+ 
+  
+    <meta name="description" content="使用gor在github上建立静态博客">
+  
+    <meta name="author" content="TengDaGeEr">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">TengDaGeEr&#39;s Blog</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">About</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>使用gor在github上建立静态博客 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2><a style="display: block;" name="1.-在github上注册新用户" href="#1.-在github上注册新用户"></a>1. 在github上注册新用户</h2>
+
+<p>进入网站 <a href="http://github.com/">http://github.com/</a> 完成注册。
+  具体过程略。</p>
+
+<p>假设你注册的用户名是: <em>abc1235678</em></p>
+
+<h2><a style="display: block;" name="2.-使用新注册的用户名登陆github" href="#2.-使用新注册的用户名登陆github"></a>2. 使用新注册的用户名登陆github</h2>
+
+<p>具体过程略。</p>
+
+<h2><a style="display: block;" name="3.-在github上建立一个仓库" href="#3.-在github上建立一个仓库"></a>3. 在github上建立一个仓库</h2>
+
+<p>名称为 <strong>username</strong>.github.io</p>
+
+<p>其中的username使用你所注册的用户名abc123来替代。</p>
+
+<p>建立新仓库，其名称是： <strong>abc1235678</strong>.github.io</p>
+
+<p><a href="https://github.com/new" title="建立新的仓库">https://github.com/new</a></p>
+
+<p><strong>注意:</strong> 仓库名称的第一部分一定要与你的用户名称相同，否则静态博客在github上是不会工作的。</p>
+
+<h2><a style="display: block;" name="4.-安装git命令行工具" href="#4.-安装git命令行工具"></a>4. 安装git命令行工具</h2>
+
+<p>无论是在windows或者linux下，可安装git客户端工具。
+  具体过程略，可百度查询安装方法。</p>
+
+<h2><a style="display: block;" name="5.-克隆仓库" href="#5.-克隆仓库"></a>5. 克隆仓库</h2>
+
+<p>进入到你想保存项目的目录中，然后执行以下命令：</p>
+
+<pre><code>  `$ git clone https://github.com/abc1235678/abc1235678.github.io`
+</code></pre>
+
+<h2><a style="display: block;" name="6.-建立一个首页文件" href="#6.-建立一个首页文件"></a>6. 建立一个首页文件</h2>
+
+<h3>6.1 进入克隆得到的目录</h3>
+
+<pre><code>  `$ cd abc1235678.github.io`
+  `$ echo &quot;Hello World&quot; &gt; index.html`
+</code></pre>
+
+<h3>6.2 向仓库提交文件</h3>
+
+<pre><code>  `$ git add --all `
+  `$ git commit -m &quot;first file.&quot;`
+  `$ git push`
+</code></pre>
+
+<p><strong>注意：</strong>
+    如果提示输入用户名、密码，输入即可。另外提交之后github上要等待10分钟左右，你所做的改变才会生效。</p>
+
+<h2><a style="display: block;" name="7.-查看你的博客内容" href="#7.-查看你的博客内容"></a>7. 查看你的博客内容</h2>
+
+<p>打入以下网址：
+  <a href="http://abc1235678.github.io" title="访问你的博客">http://abc1235678.github.io</a></p>
+
+<h2><a style="display: block;" name="8.-使用gor打造静态博客" href="#8.-使用gor打造静态博客"></a>8. 使用gor打造静态博客</h2>
+
+<p>gor的网址是：  <a href="https://github.com/wendal/gor" title="gor网址">https://github.com/wendal/gor</a></p>
+
+<p>里面有详细的安装说明及使用说明。 此处略。</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+          
+            <li class="prev disabled"><a>&larr; Previous</a></li>
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/soft_introduce/batch_rename_files.html" title="文件批量改名工具推荐">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'bestappsnowcom'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2014-08-14</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB-ref">经验分享 <span>1</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2-ref">静态博客 <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+    
+       
+          <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":[],"viewText":"��������","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":[]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>     
+        &copy; TengDaGeEr 2014 
+          with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+		  and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+     
+      </footer>
+
+    </div> <!-- /container -->
+    <!--
+    
+     -->
+    
+    
+    
+  </body>
+</html>
