@@ -1,36 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>http://best-apps-now.com/</loc>
+		<loc>http://sample.com/</loc>
 	</url>
 	<url>
-		<loc>http://best-apps-now.com/experience/create_blog_in_github.html</loc>
-		<lastmod>2014-08-14</lastmod>
-		<changefreq>weekly</changefreq>
-	</url>
-	<url>
-		<loc>http://best-apps-now.com/soft_introduce/batch_rename_files.html</loc>
-		<lastmod>2014-08-12</lastmod>
-		<changefreq>weekly</changefreq>
-	</url>
-	<url>
-		<loc>http://best-apps-now.com/soft_introduce/add_book.html</loc>
-		<lastmod>2014-08-03</lastmod>
-		<changefreq>weekly</changefreq>
-	</url>
-	<url>
-		<loc>http://best-apps-now.com/soft_introduce/smart_sniff.html</loc>
-		<lastmod>2014-08-02</lastmod>
-		<changefreq>weekly</changefreq>
-	</url>
-	<url>
-		<loc>http://best-apps-now.com/soft_introduce/curr_ports.html</loc>
-		<lastmod>2014-08-02</lastmod>
-		<changefreq>weekly</changefreq>
-	</url>
-	<url>
-		<loc>http://best-apps-now.com/soft_introduce/wnetwatcher.html</loc>
-		<lastmod>2014-08-01</lastmod>
+		<loc>http://sample.com/2013/new-born.html</loc>
+		<lastmod>2013-02-08</lastmod>
 		<changefreq>weekly</changefreq>
 	</url>
 </urlset>
