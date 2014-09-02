@@ -4,6 +4,11 @@
 		<loc>http://best-apps-now.com/</loc>
 	</url>
 	<url>
+		<loc>http://best-apps-now.com/code/go/network_crawler.html</loc>
+		<lastmod>2014-09-01</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
 		<loc>http://best-apps-now.com/zatan/ten_years.html</loc>
 		<lastmod>2014-08-15</lastmod>
 		<changefreq>weekly</changefreq>

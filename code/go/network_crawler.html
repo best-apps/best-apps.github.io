@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>使用GO语言编写网络爬虫</title>
+    <meta name="baidu-site-verification" content="UEKwThMjA1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="MobileOptimized" content="width">
+	<meta name="HandheldFriendly" content="true">
+   
+  <meta name="keywords" content="go语言,golang,网络爬虫,network-crawler">
+ 
+  
+    <meta name="description" content="使用GO语言编写网络爬虫,腾达格尔博客">
+  
+    <meta name="author" content="腾达格尔">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">腾达格尔的博客</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">About</a></li>
+
+
+            
+            欲穷千里目，更上一层楼。居高声自远,非是藉秋风。
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>使用GO语言编写网络爬虫 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>本文的程序是使用go语言编写的网络爬虫程序，目标是从某大型教育网站上批量抓取国内所有大学的信息，3000多个大学的信息可并行抓取，可控制并行度及间隔时间。
+<strong>由于我们主要是研究编程方法，因此为了避免对此教育网站造成压力，代码中将域名更改为test.com</strong></p>
+
+<h2><a style="display: block;" name="主要过程如下" href="#主要过程如下"></a>主要过程如下</h2>
+
+<h3>执行主函数main</h3>
+
+<h4>按照学校的编号循环抓取每个学校的网页内容</h4>
+
+<ul>
+<li>获得学校名称，例如：北京大学</li>
+<li>获得学校所在地，例如：北京</li>
+<li>获得院校类型，例如：综合类</li>
+<li>获得学历层次，例如：普通本科、211、985等</li>
+<li>获得招生电话</li>
+<li>获得通讯地址</li>
+<li>获得官网地址</li>
+<li>获得学校简介</li>
+<li>获得专业列表</li>
+<li>获得专业介绍</li>
+</ul>
+
+<h2><a style="display: block;" name="本代码使用了go语言的主要功能" href="#本代码使用了go语言的主要功能"></a>本代码使用了GO语言的主要功能</h2>
+
+<ul>
+<li>os,建立data目录等</li>
+<li>time，实现延时</li>
+<li>io，实现文件的写入</li>
+<li>fmt,实现格式输出</li>
+<li>net/http,实现网页内容的下载</li>
+<li>regexp,实现正则表达式对网页内容的抓取</li>
+<li>使用了go语句，进行函数并发执行</li>
+</ul>
+
+<h2><a style="display: block;" name="代码分享" href="#代码分享"></a>代码分享</h2>
+
+<p>代码中有详细的注释，代码如下：</p>
+
+<pre><code>/*
+名称：网络爬虫程序
+用途：从某大型教育网站抓取大学的信息
+作者:腾达格尔
+版本：Ver 1.00 Go语言版本：1.3
+时间：2014-09-01
+*/
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;io/ioutil&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+    &quot;regexp&quot;
+    &quot;time&quot;
+)
+
+var (
+    tag_BrTag = regexp.MustCompile(`&lt;br&gt;|(&lt;/br&gt;)|(&lt;br/&gt;)`)
+    tag_PTag  = regexp.MustCompile(`&lt;p&gt;|(&lt;/p&gt;)|(&amp;rdquo)|(&amp;ldquo)|(&amp;mdash)|(&lt;/strong&gt;)`)
+
+    tag_Nbsp = regexp.MustCompile(`&amp;nbsp;`)
+
+    tag_HTMLTag     = regexp.MustCompile(`(?s)&lt;/?.*?&gt;`)
+    tag_Space       = regexp.MustCompile(`(^\s+)|( )|(\r\n)|(\t)`)
+    tag_SchoolName  = regexp.MustCompile(`\svar\sschoolname='(.+)';\s`)
+    tag_SchoolJjUrl = regexp.MustCompile(`&lt;a href=&quot;(.+)&quot;&gt;学校简介&lt;/a&gt;`)
+    tag_SchoolJj    = regexp.MustCompile(`&lt;divclass=&quot;txt_leftline_24&quot;&gt;(.+)&lt;/p&gt;&lt;scripttype=&quot;text/javascript&quot;&gt;`)
+
+    //匹配专业列表
+    tag_SpecialtyItem = regexp.MustCompile(`&lt;a href=&quot;/schoolhtm/specialty/(.+\.htm)&quot; &gt;(.+)&lt;/a&gt;`)
+
+    //读取专业内容
+    tag_SpecialtyContent = regexp.MustCompile(`&lt;divclass=&quot;txt_leftline_24&quot;&gt;&lt;p&gt;&lt;strong&gt;(.+)&lt;/p&gt;&lt;scripttype=&quot;text/javascript&quot;&gt;`)
+
+    //学历层次
+    tag_XueLiCengCi = regexp.MustCompile(`&lt;p&gt;学历层次：(.+)&lt;p&gt;招生电话：`)
+
+    //学历层次项目
+    tag_XueLiCengCiItem = regexp.MustCompile(`\[(.*?)\]`)
+
+    //招生电话
+    tag_Zsdh = regexp.MustCompile(`&lt;p&gt;招生电话：(.+)&lt;/p&gt;&lt;p&gt;通讯地址：`)
+
+    //通信地址
+    tag_Txdz = regexp.MustCompile(`&lt;p&gt;通讯地址：(.+)&lt;/p&gt;&lt;p&gt;电子邮箱：`)
+
+    //官网地址
+    tag_Gwdz = regexp.MustCompile(`&lt;p&gt;官网地址：&lt;ahref=&quot;(.+)&quot;target=&quot;_blank&quot;class=&quot;blue_12&quot;&gt;http:`)
+
+    //所在地
+    tag_Szd = regexp.MustCompile(`&lt;p&gt;所在地：(.+)院校类型：`)
+    //院校类型
+    tag_Yxlx = regexp.MustCompile(`院校类型：(.+)&lt;/p&gt;&lt;p&gt;学历层次：`)
+)
+
+//根据网址获得网页内容
+func Get(url string) (content string, statusCode int) {
+    resp, err1 := http.Get(url)
+    if err1 != nil {
+        statusCode = -100
+        return
+    }
+    defer resp.Body.Close()
+    data, err2 := ioutil.ReadAll(resp.Body)
+    if err2 != nil {
+        statusCode = -200
+        return
+    }
+    statusCode = resp.StatusCode
+    content = string(data)
+    return
+}
+
+//获得学校首页内容
+func GetSchoolHome(code string) (school_home string, ret int) {
+    school_url := &quot;http://gkcx.test.com/schoolhtm/schoolTemple/school&quot; + code + &quot;.htm&quot;
+    s, statusCode := Get(school_url)
+    if statusCode != 200 {
+        school_home = &quot;&quot;
+        ret = 1
+        return
+    }
+    school_home = s
+    ret = 0
+    return
+}
+
+//获取学校名称
+func GetSchoolName(school_info string) (school_name string, xlcc_merge string, zsdh string, txdz string, gwdz string, szd string, yxlx string, ret int) {
+
+    match := tag_SchoolName.FindStringSubmatch(school_info)
+    if match != nil {
+        school_name = match[1]
+        ret = 0
+    } else {
+        school_name = &quot;&quot;
+        ret = 1
+    }
+
+    school_info_temp := school_info
+
+    school_info_temp = tag_Space.ReplaceAllString(school_info_temp, &quot;&quot;)
+    //fmt.Println(school_info_temp)
+
+    //学历层次
+    xlcc := &quot;&quot;
+    match1 := tag_XueLiCengCi.FindStringSubmatch(school_info_temp)
+    if match1 != nil {
+        xlcc = match1[1]
+
+    } else {
+        xlcc = &quot;&quot;
+
+    }
+
+    matches := tag_XueLiCengCiItem.FindAllStringSubmatch(xlcc, 10000)
+    for _, item := range matches {
+        xlcc_merge += item[1] + &quot;,&quot;
+
+    }
+    //fmt.Println(&quot;学历层次:&quot;,xlcc_merge)
+
+    //招生电话
+
+    matches = tag_Zsdh.FindAllStringSubmatch(school_info_temp, 10000)
+    for _, item := range matches {
+        zsdh = item[1]
+
+    }
+    //fmt.Println(&quot;招生电话:&quot;,zsdh)
+
+    //所在地
+    matches = tag_Szd.FindAllStringSubmatch(school_info_temp, 10000)
+    for _, item := range matches {
+        szd = item[1]
+        os.MkdirAll(&quot;data/&quot;+szd, 0666)
+    }
+
+    //院校类型
+    matches = tag_Yxlx.FindAllStringSubmatch(school_info_temp, 10000)
+    for _, item := range matches {
+        yxlx = item[1]
+
+    }
+
+    //通信地址
+
+    matches = tag_Txdz.FindAllStringSubmatch(school_info_temp, 10000)
+    for _, item := range matches {
+        txdz = item[1]
+
+    }
+    //fmt.Println(&quot;通信地址:&quot;,txdz)
+
+    //官网地址
+
+    matches = tag_Gwdz.FindAllStringSubmatch(school_info_temp, 10000)
+    for _, item := range matches {
+        gwdz = item[1]
+
+    }
+    //fmt.Println(&quot;官网地址:&quot;,gwdz)
+
+    return
+}
+
+//获得学校简介
+func GetSchoolJj(school_home string) (school_jj string, ret int) {
+
+    match := tag_SchoolJjUrl.FindStringSubmatch(school_home)
+    if match != nil {
+        school_jj = match[1]
+        ret = 0
+    } else {
+        school_jj = &quot;&quot;
+        ret = 1
+    }
+    school_jj = &quot;http://gkcx.test.com&quot; + school_jj
+    //fmt.Println(school_jj)
+    s, statusCode := Get(school_jj)
+    if statusCode != 200 {
+        school_jj = &quot;&quot;
+        ret = 1
+        return
+    }
+    school_jj = s
+    school_jj = tag_Space.ReplaceAllString(school_jj, &quot;&quot;)
+
+    //fmt.Println(school_jj)
+    match_jj := tag_SchoolJj.FindStringSubmatch(school_jj)
+    if match_jj != nil {
+        school_jj = match_jj[1]
+        school_jj = tag_PTag.ReplaceAllString(school_jj, &quot;&quot;)
+        school_jj = tag_BrTag.ReplaceAllString(school_jj, &quot;\r\n&quot;)
+
+        ret = 0
+    } else {
+        school_jj = &quot;&quot;
+        ret = 1
+    }
+
+    return
+}
+
+//专业列表结构体
+type SpecialtyItem struct {
+    url   string
+    title string
+}
+
+//获得专业列表
+func findSpecialty(code string) (specialty []SpecialtyItem, err error) {
+
+    school_url := &quot;http://gkcx.test.com/schoolhtm/specialty/specialtyList/specialty&quot; + code + &quot;.htm&quot;
+    content, statusCode := Get(school_url)
+    if statusCode != 200 {
+        return
+    }
+
+    matches := tag_SpecialtyItem.FindAllStringSubmatch(content, 10000)
+    specialty = make([]SpecialtyItem, len(matches))
+    for i, item := range matches {
+        specialty[i] = SpecialtyItem{&quot;http://gkcx.test.com/schoolhtm/specialty/&quot; + item[1], item[2]}
+
+    }
+    return
+}
+
+//获得专业内容
+func readSpecialty(url string) (content string) {
+
+    content, statusCode := Get(url)
+    if statusCode != 200 {
+        content = &quot;&quot;
+        return
+    }
+    content = tag_Space.ReplaceAllString(content, &quot;&quot;)
+    //fmt.Println(content)
+    match_jj := tag_SpecialtyContent.FindStringSubmatch(content)
+    if match_jj != nil {
+        content = match_jj[1]
+        content = tag_PTag.ReplaceAllString(content, &quot;&quot;)
+        content = tag_BrTag.ReplaceAllString(content, &quot;\r\n&quot;)
+        content = tag_Nbsp.ReplaceAllString(content, &quot; &quot;)
+
+    } else {
+        content = &quot;&quot;
+
+    }
+    return
+}
+
+func GetSchoolInfo(code string) {
+    school_home, ret1 := GetSchoolHome(code)
+    if ret1 != 0 {
+        fmt.Println(&quot;Error to get school Home Infomation!&quot;, code)
+        return
+    }
+
+    //获得学校名称
+    school_name, xlcc, zsdh, txdz, gwdz, szd, yxlx, ret2 := GetSchoolName(school_home)
+    if ret2 != 0 {
+        fmt.Println(&quot;Error to get school Infomation!&quot;, code)
+        return
+    }
+
+    fmt.Println(szd, school_name, code)
+    fileName := fmt.Sprintf(&quot;data/%s/列表_%s.txt&quot;, szd, school_name)
+
+    //获得学校简介
+    school_jj, ret3 := GetSchoolJj(school_home)
+    if ret3 != 0 {
+        fmt.Println(`Error to GetSchoolJj!`)
+        return
+    }
+    //fmt.Println(school_name,school_jj)
+
+    cnt := fmt.Sprintf(&quot;学校名称:%s\n所在地:%s\n院校类型:%s\n学历层次:%s\n招生电话:%s\n通讯地址:%s\n官网地址：%s\n学校简介:\n%s&quot;, school_name, szd, yxlx, xlcc, zsdh, txdz, gwdz, school_jj)
+    ioutil.WriteFile(fileName, []byte(cnt), 0644)
+
+    //获得专业列表
+    specialty, _ := findSpecialty(code)
+    for _, item := range specialty {
+        //fmt.Printf(&quot;获得专业 %s 的内容，来自 %s\n&quot;, item.title, item.url)
+        specialtyContent := readSpecialty(item.url)
+        //fmt.Println(item.title,&quot;====\r\n&quot;,specialtyContent)
+        fileName := fmt.Sprintf(&quot;data/%s/列表_%s_专业_%s.txt&quot;, szd, school_name, item.title)
+        cnt := fmt.Sprintf(&quot;%s 专业： %s \n\n%s&quot;, school_name, item.title, specialtyContent)
+        ioutil.WriteFile(fileName, []byte(cnt), 0644)
+    }
+}
+
+//主程序
+func main() {
+    //根据学校编号遍历所有大学，有些编号可能会不存在
+    for i := 30; i &lt; 4000; i++ {
+        code := fmt.Sprintf(&quot;%d&quot;, i)
+        if i &gt; 30 &amp;&amp; i%50 == 0 {
+            fmt.Println(&quot;----------------------------&quot;)
+            time.Sleep(10 * 1e9) //为了减轻网站的负担，每隔50个网站睡眠10秒
+
+        }
+        go GetSchoolInfo(code) //并发获得学校的信息
+    }
+
+}
+</code></pre>
+
+<h2><a style="display: block;" name="附录" href="#附录"></a>附录</h2>
+
+<h3>关于GO语言</h3>
+
+<p>Go语言是谷歌2009发布的第二款开源编程语言。
+Go语言专门针对多处理器系统应用程序的编程进行了优化，使用Go编译的程序可以媲美C或C++代码的速度，而且更加安全、支持并行进程。</p>
+
+<h3>GO语言官网</h3>
+
+<p><a href="http://www.golang.org" title="GO语言官网">http://www.golang.org</a> ，让人无法理解的是，天 朝 居然屏蔽了这个技术网站，我是一直上不去。</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+          
+            <li class="prev disabled"><a>&larr; Previous</a></li>
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/zatan/ten_years.html" title="最重要的十年做什么才不浪费?">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'bestappsnowcom'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2014-09-01</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#%E4%BB%A3%E7%A0%81%E5%88%86%E4%BA%AB-ref">代码分享 <span>1</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#golang-ref">golang <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+    
+       
+          <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":[],"viewText":"��������","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":[]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+         向着梦想出发，虽然我羽翼未丰，但我有乘风破浪的勇气，有梦想成真的信心。    <br>
+        &copy; 腾达格尔 2014 
+          with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+		  and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+     
+      </footer>
+
+    </div> <!-- /container -->
+    <!--
+    
+     -->
+    
+    
+    
+  </body>
+</html>
