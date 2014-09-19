@@ -4,6 +4,26 @@
 		<loc>http://best-apps-now.com/</loc>
 	</url>
 	<url>
+		<loc>http://best-apps-now.com/code/linux/linux_c_msg.html</loc>
+		<lastmod>2014-09-19</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc>http://best-apps-now.com/code/go/study_css_01.html</loc>
+		<lastmod>2014-09-09</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc>http://best-apps-now.com/code/go/study_go_01.html</loc>
+		<lastmod>2014-09-04</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc>http://best-apps-now.com/zatan/about_neixiang.html</loc>
+		<lastmod>2014-09-02</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
 		<loc>http://best-apps-now.com/code/go/network_crawler.html</loc>
 		<lastmod>2014-09-01</lastmod>
 		<changefreq>weekly</changefreq>

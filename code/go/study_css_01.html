@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>css学习</title>
+    <meta name="baidu-site-verification" content="UEKwThMjA1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="MobileOptimized" content="width">
+	<meta name="HandheldFriendly" content="true">
+   
+  <meta name="keywords" content="go语言,div+css学习">
+ 
+  
+    <meta name="description" content="div+css学习,腾达格尔博客">
+  
+    <meta name="author" content="腾达格尔">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">腾达格尔的博客</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">About</a></li>
+
+
+            
+            欲穷千里目，更上一层楼。居高声自远,非是藉秋风。
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>css学习 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>#声明</p>
+
+<p>本学习笔记摘自 <a href="http://www.aa25.cn/div_css/903.shtml">http://www.aa25.cn/div_css/903.shtml</a>
+特此声明。</p>
+
+<div id="layout">此处显示  id "layout" 的内容</div>
+
+<h2><a style="display: block;" name="一列固定宽度" href="#一列固定宽度"></a>一列固定宽度</h2>
+
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+&lt;!--
+#layout {
+    background-color: #00FFFF;
+    height: 200px;
+    width: 400px;
+}
+--&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p>截图如下：</p>
+
+<p><img src="/assets/media/images/css_div/01-01.jpg" alt="" width=""></p>
+
+<h2><a style="display: block;" name="一列固定宽度居中" href="#一列固定宽度居中"></a>一列固定宽度居中</h2>
+
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+&lt;!--
+#layout {
+    background-color: #00CCFF;
+    margin: auto;
+    height: 200px;
+    width: 400px;
+}
+--&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p>margin 设为auto时，布局居中。</p>
+
+<p>截图如下：</p>
+
+<p><img src="/assets/media/images/css_div/01-02.jpg" alt="" width=""></p>
+
+<p>##一列自适应宽度</p>
+
+<p>自适应宽度是相对于浏览器而言，盒模型的宽度随着浏览器宽度的改变而改变。这时要用到宽度的百分比。当一个盒模型不设置宽度时，它默认是相对于浏览器显示的。我们把刚才的固定宽度例子中的宽度去掉看看：</p>
+
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+&lt;!--
+#layout {
+    background-color: #00CCFF;
+    margin: auto;
+    height: 200px;
+    }
+--&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p>截图如下：
+<img src="/assets/media/images/css_div/01-03.jpg" alt="" width=""></p>
+
+<p>有些朋友可能要问了，那为什么还有那么宽的白边呢？这个是由body默认的外边距造成的。当我们不用任何样式表进行定义时，body，h1－h6，ul等元素默认有外边距或其它样式的。这里我们在css样式中增加一项：body {margin:0;}，就可以把body默认的外边距去掉，这时再预览一下，白边就没了。</p>
+
+<pre><code>    &lt;style type=&quot;text/css&quot;&gt;
+    &lt;!--
+    body {margin:0;}
+
+    #layout {
+        background-color: #00CCFF;
+        margin: auto;
+        height: 200px;
+    }
+    --&gt;
+   &lt;/style&gt;
+</code></pre>
+
+<h2><a style="display: block;" name="浏览器宽度的80%显示" href="#浏览器宽度的80%显示"></a>浏览器宽度的80%显示</h2>
+
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+&lt;!--
+body {margin:0;}
+
+#layout {
+    background-color: #00CCFF;
+    height: 200px;
+    width: 80%;
+}
+--&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p>截图如下：</p>
+
+<p><img src="/assets/media/images/css_div/01-04.jpg" alt="" width=""></p>
+
+<h2><a style="display: block;" name="浏览器宽度的80%居中显示" href="#浏览器宽度的80%居中显示"></a>浏览器宽度的80%居中显示</h2>
+
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+&lt;!--
+body {margin:0;}
+
+#layout {
+    background-color: #00CCFF;
+    height: 200px;
+    width: 80%;
+    margin: auto;
+}
+--&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p>添加了： margin: auto;</p>
+
+<p>截图如下：</p>
+
+<p><img src="/assets/media/images/css_div/01-05.jpg" alt="" width=""></p>
+
+<h2><a style="display: block;" name="一列二至多块布局" href="#一列二至多块布局"></a>一列二至多块布局</h2>
+
+<p>一般的网站整体可以分为上中下结构，即：头部、中间主体、底部。那么我们可以用三个div块来划分，分别给它们起名为：头部（header）、主体（maincontent）、底部（footer）。</p>
+
+<p>采用固定宽度居中的方式，代码如下：</p>
+
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+    &lt;!--
+    body { margin:0; padding:0;}
+    #header { margin:5px auto; width:500px; height:80px; background:#9F9;}
+    #main { margin:5px auto; width:500px; height:200px; background:#9FF;}
+    #footer { margin:5px auto; width:500px; height:80px; background:#9f9;}
+    --&gt;
+&lt;/style&gt;
+</code></pre>
+
+<p>截图如下：</p>
+
+<p><img src="/assets/media/images/css_div/01-06.jpg" alt="" width=""></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/code/linux/linux_c_msg.html" title="linux-c语言-消息队列-编程实现">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/code/go/study_go_01.html" title="GO语言学习笔记-之一">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'bestappsnowcom'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2014-09-09</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-ref">学习笔记 <span>3</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#css-ref">css <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+    
+       
+          <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":[],"viewText":"��������","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":[]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+         向着梦想出发，虽然我羽翼未丰，但我有乘风破浪的勇气，有梦想成真的信心。    <br>
+        &copy; 腾达格尔 2014 
+          with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+		  and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+     
+      </footer>
+
+    </div> <!-- /container -->
+    <!--
+    
+     -->
+    
+    
+    
+  </body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GO语言学习笔记-之一</title>
+    <meta name="baidu-site-verification" content="UEKwThMjA1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="MobileOptimized" content="width">
+	<meta name="HandheldFriendly" content="true">
+   
+  <meta name="keywords" content="go语言,golang,GO语言学习笔记">
+ 
+  
+    <meta name="description" content="GO语言学习笔记,腾达格尔博客">
+  
+    <meta name="author" content="腾达格尔">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">腾达格尔的博客</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">About</a></li>
+
+
+            
+            欲穷千里目，更上一层楼。居高声自远,非是藉秋风。
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>GO语言学习笔记-之一 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h1><a style="display: block;" name="变量" href="#变量"></a>变量</h1>
+
+<h2><a style="display: block;" name="定义变量" href="#定义变量"></a>定义变量</h2>
+
+<pre><code>var
+(
+    i int 
+    j int = 0
+    s string 
+    m string = &quot;test&quot;
+)
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>var i int
+var j int = 0
+s string 
+m string = &quot;test&quot;
+</code></pre>
+
+<p>或者
+    j := 0
+    m := &ldquo;test&rdquo;</p>
+
+<h2><a style="display: block;" name="定义常量" href="#定义常量"></a>定义常量</h2>
+
+<pre><code>const DB_COUNT = 10
+const DB_STR = &quot;SQLITE3&quot;
+</code></pre>
+
+<h2><a style="display: block;" name="定义结构体" href="#定义结构体"></a>定义结构体</h2>
+
+<pre><code>//定义专业信息结构体
+type SpecialtyInfoItem struct {
+    id      int    //学校编码
+    school  string //学校名称
+    title   string //专业名称
+    content string //专业内容
+}
+</code></pre>
+
+<h2><a style="display: block;" name="变量类型转换" href="#变量类型转换"></a>变量类型转换</h2>
+
+<p>1、整形到字符串：</p>
+
+<pre><code>var i int = 1  
+var s string  
+s = strconv.Itoa(i) 
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>s = FormatInt(int64(i), 10)  
+</code></pre>
+
+<p>2、字符串到整形</p>
+
+<pre><code>var s string = &quot;1&quot;  
+var i int  
+i, err = strconv.Atoi(s) 
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>i, err = ParseInt(s, 10, 0)  
+</code></pre>
+
+<p>3、字符串到float(32 / 64)</p>
+
+<pre><code>var s string = 1  
+var f float32  
+f, err = ParseFloat(s, 32)  
+</code></pre>
+
+<p>float 64的时候将上面函数中的32转为64即可</p>
+
+<p>4、整形到float或者float到整形
+    直接使用float(i)
+或者
+    int(f) 直接进行转换即可</p>
+
+<p>数据类型</p>
+
+<pre><code>var varName type，var var1,var2… type，var varName type = Value，var varName1,varName2 type = Value1,Value2，var varName1,varName2=Value1,Value2，varName1,varName2:=Value1,Value2，定义数据类型。
+
+声明了没有被使用的变量将在编译时报错。
+
+常量定义： const varName = Value , const varName type = Value
+
+string字符串类型值不可改变，但是可以切片，字符串可以使用+进行连接
+
+iota用来声明enum，表示自加1，初始为0
+
+var arrayName [N]type用来声明数组，或者使用 arrayName := [N]type{ v1,v2…}来声明
+
+数组声明可以嵌套
+
+slice用来表示切片，声明方式var sliceName []type或者sliceName := []type{v1,v2…}
+
+slice保存的是引用而非实体
+
+在slice中有一些内置函数，len获取长度，cap获取最大容量，append追加数据，copy用来拷贝数据
+
+map声明方式为var mapName map[keyType] valueType或者mapName := make(map[keyType]valueType)
+
+map可通过 key : value 初始化
+
+make用于内建类型的内存分配，new用于各种类型的内存分配，new返回指针而make返回非0的值
+</code></pre>
+
+<p>流程控制</p>
+
+<pre><code>if语句不需要括号，在if语句中可以声明变量，用分好分割if语句的条件判断
+
+  if x:=function();x&lt;10 {
+      fmt.Printf(&quot;x &lt; 10,%d\n&quot;,x);
+  }else{
+      fmt.Print(&quot;x &gt;= 10 ,%d\n&quot;,x);
+  }
+
+goto语句类似C语言，但是跳转到必须在当前函数内定义的标签
+
+for语句类似C语言，但是break和continue可以跟标号，跳出多重循环。
+
+switch语句不用break，如果想强行执行下面的case可以使用fallthrough
+</code></pre>
+
+<p>函数</p>
+
+<p>声明方式：</p>
+
+<p>func funcName(input1 type1, input2 type2) (output1 type1, output2 type2)</p>
+
+<pre><code>func用来声明函数，函数名为funcName，后面跟输入，输出的数据类型。
+
+函数可以有多个返回值
+
+函数的值操作和指针操作类似C语言，内置类型中的string,slice,map直接使用的是类似的指针传递，不用使用取地址符，但是，如果需要改变slice的长度，则需要取地址穿指针。
+
+defer语句用来表示在函数返回前执行的语句。
+
+type typeName func(input1 inputType1 , input2 inputType2 [, ...]) (result1 resultType1 [, ...])用来声明一个函数类型，主要用于高阶函数中。
+
+import用来导入包，package用来导出包，包操作使用.操作符
+</code></pre>
+
+<p>Struct类型</p>
+
+<pre><code>声明方式：
+
+  type Person struct {
+  name string
+  age int
+  }
+
+匿名方式，匿名方式下A含有B的所有类型
+
+  type Student struct {
+  Person  // 默认Person的所有字段
+  speciality string
+  }
+
+如果匿名类型中有字段和本身有冲突，可以使用匿名类型+.访问
+
+类型的方法声明：
+
+  func (r ReceiverType) funcName(parameters) (results)
+
+可以使用：type typeName typeLiteral来自定义类型，定义完以后可以使用方法来扩展类型的功能。
+
+需要改变struct内部的值时，需要将ReceiverType定义为*指针类型，但是调用的时候不需要，go语言自动帮你完成了。
+
+方法可以继承，可以重载
+</code></pre>
+
+<p>interface接口</p>
+
+<pre><code>type InterfaceName interface用来定义inerface
+
+interface类型定义了一组方法，如果某个对象实现了某个接口的所有方法，则此对象就实现了此接口。
+
+空interface(interface{})不包含任何的method，正因为如此，所有的类型都实现了空interface
+
+一个函数把interface{}作为参数，那么他可以接受任意类型的值作为参数，如果一个函数返回interface{},那么也就可以返回任意类型的值
+
+value, ok = element.(T)，这里value就是变量的值，ok是一个bool类型，element是interface变量，T是断言的类型，如果ok为true则表示，element确实是T类型的。
+
+interface可以嵌套
+</code></pre>
+
+<p>并发</p>
+
+<pre><code>使用go关键字+函数名实现并发
+
+使用channel实现线程间通讯，channel通过make构造，使用&lt;-来发送和接受数据。
+
+chan是channel的关键字，后面跟数据类型ch &lt;- v发送数据，v:=&lt;-ch接收数据，ch是chan类型。
+
+  package main
+  import &quot;fmt&quot;
+  func sum(a []int, c chan int) {
+      total := 0
+      for _, v := range a {
+          total += v
+      }
+      c &lt;- total  // send total to c
+  }
+
+  func main() {
+      a := []int{7, 2, 8, -9, 4, 0}
+      c := make(chan int)
+      go sum(a[:len(a)/2], c)
+      go sum(a[len(a)/2:], c)
+      x, y := &lt;-c, &lt;-c  // receive from c
+      fmt.Println(x, y, x + y)
+  }
+
+channel默认是阻塞形式的，可以进行线程同步。
+
+ch := make(chan type, value)构造channel时可通过设置不同的value来设定channl的buffer长度。
+
+close用来关闭channel
+
+使用select+case来选择多个channel
+
+使用select + case &lt;- time.After(5 * time.Second)来设定超时
+
+Goexit 退出当前执行的goroutine，但是defer函数还会继续调用
+
+Gosched 让出当前goroutine的执行权限，调度器安排其他等待的任务运行，并在下次某个时候从该位置恢复执行。
+
+NumCPU 返回 CPU 核数量
+
+NumGoroutine 返回正在执⾏行和排队的任务总数
+
+GOMAXPROCS 用来设置可以运行的CPU核数
+</code></pre>
+
+<h2><a style="display: block;" name="解析命令行" href="#解析命令行"></a>解析命令行</h2>
+
+<pre><code>package main
+import (
+&quot;fmt&quot;
+&quot;flag&quot; //命令行选项解析器
+)
+
+var input_action = flag.String(&quot;action&quot;, &quot;startweb&quot;, &quot;请输入动作startweb 启动webserver ,initdb 初始化数据库 &quot;)
+
+func main() {
+    //解析命令行
+    flag.Parse()
+    fmt.Println(&quot;action=&quot;, *input_action)
+    switch *input_action {
+    case &quot;startweb&quot;:
+        //startWebServer() //启动webserver
+    case &quot;initdb&quot;:
+        //myweb_lib.InitKmDB() //重新生成知识库数据库，只在第一次使用
+    default:
+        flag.Usage()
+    }
+
+}
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/code/go/study_css_01.html" title="css学习">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/zatan/about_neixiang.html" title="送给程序员：关于性格内向者的10个误解">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'bestappsnowcom'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2014-09-04</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-ref">学习笔记 <span>3</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#golang-ref">golang <span>2</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+    
+       
+          <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":[],"viewText":"��������","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":[]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+         向着梦想出发，虽然我羽翼未丰，但我有乘风破浪的勇气，有梦想成真的信心。    <br>
+        &copy; 腾达格尔 2014 
+          with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+		  and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+     
+      </footer>
+
+    </div> <!-- /container -->
+    <!--
+    
+     -->
+    
+    
+    
+  </body>
+</html>
