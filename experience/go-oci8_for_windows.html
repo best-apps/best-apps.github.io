@@ -2,16 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>使用gor在github上建立静态博客</title>
+    <title>go语言在windows8访问oracle</title>
     <meta name="baidu-site-verification" content="UEKwThMjA1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="MobileOptimized" content="width">
 	<meta name="HandheldFriendly" content="true">
    
-  <meta name="keywords" content="经验分享,blog,gor,github">
+  <meta name="keywords" content="go语言,go-oci8,oracle,golang">
  
   
-    <meta name="description" content="使用gor在github上建立静态博客">
+    <meta name="description" content="go语言在windows8访问oracle">
   
     <meta name="author" content="腾达格尔">
 
@@ -88,88 +88,96 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>使用gor在github上建立静态博客 </h1>
+  <h1>go语言在windows8访问oracle </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <h2><a style="display: block;" name="1.-在github上注册新用户" href="#1.-在github上注册新用户"></a>1. 在github上注册新用户</h2>
+    <p>本文描述了go语言的oracle驱动在windows8 64位系统的安装过程。</p>
 
-<p>进入网站 <a href="http://github.com/">http://github.com/</a> 完成注册。
-  具体过程略。</p>
+<h2><a style="display: block;" name="1.-go语言安装包使用的是32位的windows版本" href="#1.-go语言安装包使用的是32位的windows版本"></a>1. go语言安装包使用的是32位的windows版本</h2>
 
-<p>假设你注册的用户名是: <em>abc1235678</em></p>
-
-<h2><a style="display: block;" name="2.-使用新注册的用户名登陆github" href="#2.-使用新注册的用户名登陆github"></a>2. 使用新注册的用户名登陆github</h2>
-
-<p>具体过程略。</p>
-
-<h2><a style="display: block;" name="3.-在github上建立一个仓库" href="#3.-在github上建立一个仓库"></a>3. 在github上建立一个仓库</h2>
-
-<p>名称为 <strong>username</strong>.github.io</p>
-
-<p>其中的username使用你所注册的用户名abc123来替代。</p>
-
-<p>建立新仓库，其名称是： <strong>abc1235678</strong>.github.io</p>
-
-<p><a href="https://github.com/new" title="建立新的仓库">https://github.com/new</a></p>
-
-<p><strong>注意:</strong> 仓库名称的第一部分一定要与你的用户名称相同，否则静态博客在github上是不会工作的。</p>
-
-<h2><a style="display: block;" name="4.-安装git命令行工具" href="#4.-安装git命令行工具"></a>4. 安装git命令行工具</h2>
-
-<p>无论是在windows或者linux下，可安装git客户端工具。
-  具体过程略，可百度查询安装方法。</p>
-
-<h2><a style="display: block;" name="5.-克隆仓库" href="#5.-克隆仓库"></a>5. 克隆仓库</h2>
-
-<p>进入到你想保存项目的目录中，然后执行以下命令：</p>
-
-<pre><code>  `$ git clone https://github.com/abc1235678/abc1235678.github.io`
+<pre><code>go1.3.1.windows-386.msi
+下载地址：www.golang.org
+安装到目录：c:\go
 </code></pre>
 
-<h2><a style="display: block;" name="6.-建立一个首页文件" href="#6.-建立一个首页文件"></a>6. 建立一个首页文件</h2>
+<h2><a style="display: block;" name="2.-oracle驱动使用的是32位的windows版本" href="#2.-oracle驱动使用的是32位的windows版本"></a>2. Oracle驱动使用的是32位的windows版本</h2>
 
-<h3>6.1 进入克隆得到的目录</h3>
-
-<pre><code>  `$ cd abc1235678.github.io`
-  `$ echo &quot;Hello World&quot; &gt; index.html`
+<pre><code>instantclient-basic-nt-11.2.0.4.0.zip
+instantclient-sdk-nt-11.2.0.4.0.zip
+下载地址：www.oracle.com
+安装到: c:\ora_11_client
+sdk解压后复制到 c:\ora_11_client\sdk 目录下
 </code></pre>
 
-<h3>6.2 向仓库提交文件</h3>
+<h2><a style="display: block;" name="3.mingw使用的是32位的windows版本" href="#3.mingw使用的是32位的windows版本"></a>3.Mingw使用的是32位的windows版本</h2>
 
-<pre><code>  `$ git add --all `
-  `$ git commit -m &quot;first file.&quot;`
-  `$ git push`
+<pre><code>使用 mingw-get-setup.exe 在线安装
+官网地址：http://www.mingw.org/
+安装位置： C:\MinGW
 </code></pre>
 
-<p><strong>注意：</strong>
-    如果提示输入用户名、密码，输入即可。另外提交之后github上要等待10分钟左右，你所做的改变才会生效。</p>
+<h2><a style="display: block;" name="4.-以上内容安装后，修改系统的环境变量" href="#4.-以上内容安装后，修改系统的环境变量"></a>4. 以上内容安装后，修改系统的环境变量</h2>
 
-<h2><a style="display: block;" name="7.-查看你的博客内容" href="#7.-查看你的博客内容"></a>7. 查看你的博客内容</h2>
+<pre><code>GOROOT=C:\Go\
+TNS_ADMIN=c:\ora_11_client
+ORACLE_BASE=c:\ora_11_client
+ORACLE_HOME=c:\ora_11_client
+PATH=原path;c:\mingw\bin;%ORACLE_HOME%;%GOROOT%\bin;
+</code></pre>
 
-<p>打入以下网址：
-  <a href="http://abc1235678.github.io" title="访问你的博客">http://abc1235678.github.io</a></p>
+<h2><a style="display: block;" name="5.-在目录c:\mingw\lib目录下建立目录-pkg-config" href="#5.-在目录c:\mingw\lib目录下建立目录-pkg-config"></a>5. 在目录C:\MinGW\lib目录下建立目录 pkg-config</h2>
 
-<h2><a style="display: block;" name="8.-使用gor打造静态博客" href="#8.-使用gor打造静态博客"></a>8. 使用gor打造静态博客</h2>
+<h2><a style="display: block;" name="6.-到-https://github.com/wendal/go-oci8-上直接下载压缩包-go-oci8-master.zip" href="#6.-到-https://github.com/wendal/go-oci8-上直接下载压缩包-go-oci8-master.zip"></a>6. 到 <a href="https://github.com/wendal/go-oci8">https://github.com/wendal/go-oci8</a> 上直接下载压缩包 go-oci8-master.zip</h2>
 
-<p>gor的网址是：  <a href="https://github.com/wendal/gor" title="gor网址">https://github.com/wendal/gor</a></p>
+<pre><code>解压后，将里面的windows目录下的，oci8.pc 复制到 C:\MinGW\lib\pkg-config
+将windows目录下的pkg-config.exe复制到 C:\MinGW\bin 目录中。
+</code></pre>
 
-<p>里面有详细的安装说明及使用说明。 此处略。</p>
+<h2><a style="display: block;" name="7.-修改oci8.pc文件内容为自己的配置" href="#7.-修改oci8.pc文件内容为自己的配置"></a>7. 修改oci8.pc文件内容为自己的配置</h2>
+
+<pre><code>prefix=C:/ora_11_client
+exec_prefix=C:/ora_11_client
+</code></pre>
+
+<h2><a style="display: block;" name="8.-去www.zlib.net-下载zlib的zlib128-dll.zip-,-解压后-放到c:\mingw的目录中" href="#8.-去www.zlib.net-下载zlib的zlib128-dll.zip-,-解压后-放到c:\mingw的目录中"></a>8. 去www.zlib.net 下载zlib的zlib128-dll.zip , 解压后 放到C:\MinGW的目录中</h2>
+
+<h2><a style="display: block;" name="9.-执行-go-get-github.com/wendal/go-oci8" href="#9.-执行-go-get-github.com/wendal/go-oci8"></a>9. 执行 go get github.com/wendal/go-oci8</h2>
+
+<pre><code>如果出现报错，则需要修改如下内容。
+修改oci8.go中OCIServer为OCISvcCtx，全部替换即可
+</code></pre>
+
+<h2><a style="display: block;" name="10.-再次执行-go-get-github.com/wendal/go-oci8" href="#10.-再次执行-go-get-github.com/wendal/go-oci8"></a>10. 再次执行 go get github.com/wendal/go-oci8</h2>
+
+<h2><a style="display: block;" name="11-执行测试" href="#11-执行测试"></a>11 执行测试</h2>
+
+<pre><code>cd %GOPATH%/src/github.com/wendal/go-oci8/example
+go run example
+如果报错，则修改一下 :
+_ &quot;github.com/matten/go-oci8&quot;
+修改为
+_ &quot;github.com/wendal/go-oci8&quot;
+
+db, err := sql.Open(&quot;oci8&quot;, &quot;用户名/密码@tns_name&quot;)
+</code></pre>
+
+<p>至此，在我的环境上编译成功。</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/zatan/no_read_no_ok.html" title="花10分钟看一看少走30年弯路">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/soft_introduce/batch_rename_files.html" title="文件批量改名工具推荐">Next &rarr;</a></li>
+            <li class="next"><a href="/code/linux/linux_c_msg.html" title="linux-c语言-消息队列-编程实现">Next &rarr;</a></li>
           
           
         </ul>
@@ -195,7 +203,7 @@
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2014-08-14</span></div>
+    <div class="date"><span>2014-09-23</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -210,7 +218,7 @@
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2-ref">静态博客 <span>1</span></a>
+  <a href="/tags/#go%E8%AF%AD%E8%A8%80-ref">go语言 <span>1</span></a>
 </li>
     
     </ul>

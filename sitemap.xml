@@ -4,7 +4,17 @@
 		<loc>http://best-apps-now.com/</loc>
 	</url>
 	<url>
+		<loc>http://best-apps-now.com/experience/go-oci8_for_windows.html</loc>
+		<lastmod>2014-09-23</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
 		<loc>http://best-apps-now.com/code/linux/linux_c_msg.html</loc>
+		<lastmod>2014-09-19</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc>http://best-apps-now.com/code/linux/linux_c_base64.html</loc>
 		<lastmod>2014-09-19</lastmod>
 		<changefreq>weekly</changefreq>
 	</url>
